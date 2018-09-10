@@ -208,6 +208,10 @@ travelInstagramAccounts = {
 "wildtravelers" : 662247344
 }
 
+def getTimeDifference(start_time):
+    difference = getDateNow() - start_time
+    return difference.total_seconds()
+
 def getInstagramAccount(instagramAccount):
     if instagramAccount == "models":
         accounts = modelsInstagramAccounts
