@@ -1,5 +1,5 @@
 #!/bin/bash
-DIRECTORY=$HOME/Dropbox/personal/instagram_project/code
+DIRECTORY=/insta_project
 SERVER_PATH=$HOME/ig
 CREDENTIALS=$1
 ACCOUNTS=$2
@@ -19,8 +19,29 @@ is_running(){
     return 1
   fi
 }
+
 if is_running; then # || is_banned; then
-  /bin/echo "`date` : quiting script, it is already running"
+  state=$(ps aux | grep $PY_SCRIPT_NAME | grep -v grep | grep $CREDENTIALS | awk '{print $8}')
+  if [ $state == "R" ]; then # R here
+    echo "`date` :this is the state: $state"
+    time_running=$(ps aux | grep $PY_SCRIPT_NAME | grep -v grep | grep $CREDENTIALS |awk '{print $10}' | awk -F: '{print $1}')
+    pid=$(ps aux | grep $PY_SCRIPT_NAME | grep -v grep | grep $CREDENTIALS |awk '{print $2}')
+    echo $pid
+    echo $time_running
+    if (( $time_running > 5 )); then # bigger than here
+      echo "`date` :time running bigger than logic"
+      parent_pid=$(ps -o ppid= -p $pid)
+      echo "`date` :parent pid: $parent_pid"
+      kill -9 $pid $parent_pid
+      exit
+    else
+      echo "`date` :time running less than logic"
+    fi
+  else
+    /bin/echo "`date` : quiting script, it is already running"
+  fi
 else
-  /usr/bin/python $APP_PATH/$PY_SCRIPT_NAME $CREDENTIALS $ACCOUNTS  # >> $APP_PATH/like_users_media.log 2>&1
+  /usr/bin/python $APP_PATH/$PY_SCRIPT_NAME $CREDENTIALS $ACCOUNTS # >> $APP_PATH/like_users_media.log 2>&1
+  /bin/echo "`date` script has finished with result: $?"
+  exit
 fi

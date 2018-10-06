@@ -23,8 +23,14 @@ if __name__ == "__main__":
     start_time = getDateNow()
     elapsed_time = 0
     TOTAL_TIME = 4500 # seconds
-    # while counter <= TOTAL_LIKES:
-    while elapsed_time <= TOTAL_TIME:
+    while counter <= TOTAL_LIKES:
+    #while True:
+    #while elapsed_time <= TOTAL_TIME:
+        if elapsed_time >= TOTAL_TIME:
+            print(str(getDateNow()) + " Exiting because Elapsed time: " + str(elapsed_time)
+            + " is over total time: " + str(TOTAL_TIME))
+            logout(api)
+            sys.exit()
         while True:
             #print "beginning of second while loop"
             try:
@@ -51,6 +57,7 @@ if __name__ == "__main__":
                 # print(str(getDateNow()) + str(ie))
             except NameError as ne:
                 print(str(getDateNow()) + "Exception: " + str(ne))
+
                 logout(api)
                 sys.exit()
                 break
@@ -81,7 +88,7 @@ if __name__ == "__main__":
         else:
             print(str(getDateNow()) + " Response for like returned False")
             break_counter +=1
-            if break_counter >= 2:
+            if break_counter >= 1:
                 print(str(getDateNow()) + " Exiting script as like resp is False few times")
                 logout(api)
                 sys.exit()

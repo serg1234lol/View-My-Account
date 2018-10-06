@@ -20,7 +20,6 @@ def load_config():
     """
     return cfg
 
-
 def load_config(path):
     config_path = path
     cfg = ymlconfig.load_file(config_path)
@@ -171,12 +170,50 @@ foodInstagramAccounts = {
 }
 
 bulldogsInstagramAccounts = {
-"bulldogstuff" : 5905060,
-"bullyfame" : 1048181764,
 "puppystagrams" : 1559136659,
+"bulldogstuff" : 5905060,
+"sgt_bulldog" : 16881198,
 "jorge_thebulldog" : 4028271238,
+"bullyrazzis" : 273549266,
+"bulldog__diesel" : 5840535297,
+"pieter.shirley" : 2538045062,
+"weheart.bulldogs" : 5443333159,
+"butter_the_bulldog" : 2071091186,
+"titon_and_fiona" : 2376505933,
+"winston_da_potato" : 7364595221,
+"bulldogleon0421" : 1794915685,
+"bulldogoclock" : 481645069,
+"matildarose_thebulldog" : 3289230028,
+"windsor_roman_king" : 8150253653,
+"the_bulldog_lebowski" : 6680502408,
+"missdafne_" : 2293719512,
+"_bonniethebulldog" : 7219766877,
+"bulldogwalter" : 1933701573,
+"theroyalprinceteo" : 4867076231,
+"rudynroman" : 6712684669,
+#"princesspugwhiteknightbulldog" : 2946619416,
+"arthurzinhoeskinazi" : 7909345642,
+"the.love.of.bulldog" : 8059976371,
+"meubulldogingles" : 593888211,
+"bullyfame" : 1048181764,
+"chestersocks" : 7590517547,
+"rocco_and_duca" : 1686354279,
+"lets_go_hank" : 7866472418,
+"nala_and_coco_" : 7579390058,
 "minibulldogsrus" : 195898640,
-"weheart.bulldogs" : 5443333159
+"bulldog_rubyred" : 6000258226,
+"maca_bulldog" : 8376579386,
+"dieselthedawg" : 251973778,
+"kung_fu_ken_ken_" : 6555363773,
+"beefybulldogs" : 19882799,
+"bulldog.mano" : 8269926853,
+"frankie.bullie" : 7919174863,
+"_sullythebully_" : 8566172880,
+"thorbullyboy" : 4294607348,
+"busterthebulldog17" : 7109283706,
+"milo_the_englishbulldog" : 6574408650,
+"bouba_the_english_bulldog" : 7702911218,
+"rocco__the__bully" : 7628034507
 }
 
 travelInstagramAccounts = {
@@ -208,6 +245,26 @@ travelInstagramAccounts = {
 "wildtravelers" : 662247344
 }
 
+fitnessInstagramAccounts = {
+"laceylivefit" : 29692719,
+"minibutmighty_" : 2857895733,
+"karinaelle" : 9136654,
+"paigereilly" : 13521206,
+"fearstofit" : 24273101,
+"megandavis6" : 52251223,
+"fit_and_dedicated" : 1533942699,
+"shannon.henryy" : 1676629789,
+"samanne.fit" : 1814854020,
+"fitlifelucy" : 2956528105,
+"mbpfitnesss" : 3261745074,
+"presleykp.fit" : 1723030476,
+"jasonpostonpro" : 30110648,
+"cschmidt.fit" : 462505075,
+"gymsharktrain" : 6975741036,
+"gymsharkwomen" : 1659879703,
+"gymshark" : 390927249
+}
+
 def getTimeDifference(start_time):
     difference = getDateNow() - start_time
     return difference.total_seconds()
@@ -221,6 +278,8 @@ def getInstagramAccount(instagramAccount):
         accounts = bulldogsInstagramAccounts
     elif instagramAccount == "travel":
         accounts = travelInstagramAccounts
+    elif instagramAccount == "fitness":
+        accounts = fitnessInstagramAccounts
     else:
         print(str(getDateNow()) +" Unknown accounts, exiting")
         sys.exit()
@@ -240,8 +299,15 @@ def getTotalComments(api, media_id):
         next_max_id = api.LastJson.get('next_max_id', '')
     return comments
 
-def getMediaLikes(api, media_id):
+def getTotalPopularFeed(api):
+        popular_feed = []
+        _ = api.getPopularFeed()
+        #print(api.LastJson)
+        #sys.exit()
+        popular_feed.extend(api.LastJson.get('items', []))
+        return popular_feed
 
+def getMediaLikes(api, media_id):
     likes = []
     _ = api.getMediaLikers(media_id)
     likes = api.LastJson
@@ -358,7 +424,8 @@ def createCommentFromUserList(users):
     return comment
 
 def randomComment():
-    comments = ["Nice :)", "Wow :)", "Cool :)", "Awesome :)"]
+    # comments = ["Nice :)", "Wow :)", "Cool :)", "Awesome :)"]
+    comments = ["❤️❤️❤️","sweet :)","Nice :)", "Wow :)", "Cool :)", "Awesome :)"]
     comment = randomList(comments)
     return comment
 
@@ -367,7 +434,6 @@ def commentMedia(api,media_id,comment):
     return commentResult
 
 def mediaHasBeenLiked(api,media_id):
-
     total_likes = getMediaLikes(api,media_id)
     hasBeenLiked = False
     for user in total_likes['users']:
