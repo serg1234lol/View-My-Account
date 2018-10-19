@@ -29,7 +29,7 @@ if is_running; then # || is_banned; then
     pid=$(ps aux | grep $PY_SCRIPT_NAME | grep -v grep | grep $CREDENTIALS |awk '{print $2}')
     echo $pid
     echo $time_running
-    if (( $time_running > 5 )); then # bigger than here
+    if (( $time_running > 4 )); then # bigger than here
       echo "`date` :time running bigger than logic"
       parent_pid=$(ps -o ppid= -p $pid)
       echo "`date` :parent pid: $parent_pid"
