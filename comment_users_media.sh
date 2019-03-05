@@ -22,7 +22,7 @@ is_running(){
 
 if is_running; then # || is_banned; then
   state=$(ps aux | grep $PY_SCRIPT_NAME | grep -v grep | grep $CREDENTIALS | awk '{print $8}')
-  if [ $state == "R" ]; then # R here
+  if [[ $state == "R" ]]; then # R here
     echo "`date` :this is the state: $state"
     time_running=$(ps aux | grep $PY_SCRIPT_NAME | grep -v grep | grep $CREDENTIALS |awk '{print $10}' | awk -F: '{print $1}')
     pid=$(ps aux | grep $PY_SCRIPT_NAME | grep -v grep | grep $CREDENTIALS |awk '{print $2}')

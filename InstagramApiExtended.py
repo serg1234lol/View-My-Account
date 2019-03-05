@@ -10,6 +10,18 @@ import random
 import json
 import yaml
 import ymlconfig
+import os
+# Trying to make this work in mac
+# import imp
+# InstagramAPI = imp.load_source('InstagramAPI', '/usr/local/lib/python2.7/site-packages/InstagramAPI/InstagramAPI.py')
+# InstagramAPI.MyClass()
+
+def get_absolute_path(relative_path):
+    dirname = os.path.dirname(__file__)
+    print dirname
+    filename = os.path.join(dirname, relative_path)
+    print filename
+    return filename
 
 def load_config():
     config_path = "/etc/ig/cf.yml"
@@ -180,40 +192,40 @@ bulldogsInstagramAccounts = {
 "weheart.bulldogs" : 5443333159,
 "butter_the_bulldog" : 2071091186,
 "titon_and_fiona" : 2376505933,
-"winston_da_potato" : 7364595221,
+# "winston_da_potato" : 7364595221,
 "bulldogleon0421" : 1794915685,
 "bulldogoclock" : 481645069,
 "matildarose_thebulldog" : 3289230028,
-"windsor_roman_king" : 8150253653,
-"the_bulldog_lebowski" : 6680502408,
-"missdafne_" : 2293719512,
-"_bonniethebulldog" : 7219766877,
+# "windsor_roman_king" : 8150253653,
+#  "the_bulldog_lebowski" : 6680502408,
+"missdafne_" : 2293719512, # 4000 users
+# "_bonniethebulldog" : 7219766877,
 "bulldogwalter" : 1933701573,
-"theroyalprinceteo" : 4867076231,
-"rudynroman" : 6712684669,
+# "theroyalprinceteo" : 4867076231,
+#"rudynroman" : 6712684669,
 #"princesspugwhiteknightbulldog" : 2946619416,
 "arthurzinhoeskinazi" : 7909345642,
-"the.love.of.bulldog" : 8059976371,
-"meubulldogingles" : 593888211,
+#"the.love.of.bulldog" : 8059976371, # 4000 users
+"meubulldogingles" : 593888211, # 7000 users
 "bullyfame" : 1048181764,
-"chestersocks" : 7590517547,
+# "chestersocks" : 7590517547,
 "rocco_and_duca" : 1686354279,
-"lets_go_hank" : 7866472418,
-"nala_and_coco_" : 7579390058,
+# "lets_go_hank" : 7866472418,
+# "nala_and_coco_" : 7579390058,
 "minibulldogsrus" : 195898640,
-"bulldog_rubyred" : 6000258226,
-"maca_bulldog" : 8376579386,
-"dieselthedawg" : 251973778,
-"kung_fu_ken_ken_" : 6555363773,
-"beefybulldogs" : 19882799,
-"bulldog.mano" : 8269926853,
-"frankie.bullie" : 7919174863,
-"_sullythebully_" : 8566172880,
+# "bulldog_rubyred" : 6000258226,
+# "maca_bulldog" : 8376579386,
+# "dieselthedawg" : 251973778, # 3000 users
+# "kung_fu_ken_ken_" : 6555363773,
+"beefybulldogs" : 19882799, # 4000 users
+#"bulldog.mano" : 8269926853,
+# "frankie.bullie" : 7919174863,
+ # "_sullythebully_" : 8566172880,
 "thorbullyboy" : 4294607348,
-"busterthebulldog17" : 7109283706,
-"milo_the_englishbulldog" : 6574408650,
-"bouba_the_english_bulldog" : 7702911218,
-"rocco__the__bully" : 7628034507
+# "busterthebulldog17" : 7109283706,
+# "milo_the_englishbulldog" : 6574408650,
+#"bouba_the_english_bulldog" : 7702911218,
+"rocco__the__bully" : 7628034507 # 4000 users
 }
 
 travelInstagramAccounts = {
@@ -265,6 +277,24 @@ fitnessInstagramAccounts = {
 "gymshark" : 390927249
 }
 
+memeInstagramAccounts = {
+"memes" : 300712527,
+"instafootballmemes" : 1465387029,
+"footballmemesinsta" : 1017415554,
+"fuckyourchill" : 6979074440,
+"theintrovertnation" : 4525144819,
+"exoomf" : 8638359961,
+"dreamsaboutmymemes" : 5682467752,
+"gagfootball" : 4624712398,
+"foot.beast" : 1101182287,
+"goalnet433" : 4719477912,
+"the.lad.football" : 3521965701,
+"memesofootball" : 1967104341,
+"footyemporium" : 446238634,
+"iamfootballmemes" : 1799990133,
+"thefutbolnet" : 2051036558
+}
+
 def getTimeDifference(start_time):
     difference = getDateNow() - start_time
     return difference.total_seconds()
@@ -280,6 +310,8 @@ def getInstagramAccount(instagramAccount):
         accounts = travelInstagramAccounts
     elif instagramAccount == "fitness":
         accounts = fitnessInstagramAccounts
+    elif instagramAccount == "meme":
+        accounts = memeInstagramAccounts
     else:
         print(str(getDateNow()) +" Unknown accounts, exiting")
         sys.exit()
@@ -332,9 +364,9 @@ def getFollowersNotFollowing(api,userId):
     # counterPrivate = 0
     # counterPublic = 0
     myFollowers = api.getTotalFollowers(api.username_id)
-    print("myFollowers", str(len(myFollowers)) )
+    print(" (" + str(getDateNow()) + " myFollowers=" + str(len(myFollowers)) + ")")
     followers = api.getTotalFollowers(userId)
-    print("followers", str(len(followers)) )
+    print(str(getDateNow()) + " Source account followers", str(len(followers)))
     for follower in followers:
         # if follower['is_private'] == True:
         #     counterPrivate += 1
@@ -353,7 +385,7 @@ def getFollowersNotFollowing(api,userId):
         # print("this is the follower info: ", follower)
             #print("follower id: " + str(follower['pk']) + "  Not equals following id " + str(myFollower['pk']))
         #print("this is the beinFollowed variable", str(beingFollowed) )
-    print("size of list: ",len(followersNotFollowing))
+    print(str(getDateNow()) + " Size of list: ",len(followersNotFollowing))
     # print("counter private: ",str(counterPrivate))
     # print("counter public: ",str(counterPublic))
     print(str(getDateNow()) + " Just retrieved the followers not following")
@@ -505,10 +537,11 @@ def followUser(user):
     print(str(getDateNow()) + " Username: " + str(user['username'])  + " UserID: " + str(users['pk']) + " is: " + str(fll))
     return fll
 
-def writeInFile(file_name,text):
-    with open(file_name, 'w+') as f:
+def writeInFile(path_to_file,text):
+    with open(path_to_file, 'w+') as f:
         f.write(text)
     print "just written in file"
+    f.close()
 
 def unfollowUsers(users):
     counter = 0

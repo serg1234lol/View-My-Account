@@ -8,14 +8,24 @@ instaAccounts = sys.argv[2]
 
 accounts = getInstagramAccount(instaAccounts)
 
+time_range_first = 80
+time_range_last = 90
+
 if __name__ == "__main__":
     cfg = load_config(credentials)
+    try:
+        trf = cfg.time_range.first
+        trl = cfg.time_range.last
+    except AttributeError as ae:
+        trf = time_range_first
+        trl = time_range_last
     api = InstagramAPI(cfg.user, cfg.password)
     api.login()
     rk = randomDict(accounts)
     ia = accounts[rk]
     print(str(getDateNow()) + " random account to get the followers: ", rk)
     newFollowers = getFollowersNotFollowing(api,ia)
+    # newFollowers = getFollowersNotFollowing(api,7366587105)
     TOTAL_LIKES = 70
     counter = 0
     like_attempt = 0
@@ -71,11 +81,13 @@ if __name__ == "__main__":
             #     print(str(getDateNow()) + " Exception trying to get media")
         resp = likeMediaNew(api,rmi)
         if resp == True:
+        # testing purposes
+        # if resp != True:
             print(str(getDateNow()) +" Getting media-item to like for username: "
             + str(media['username']) + " with user_id: " + str(media['pk'])
             + " and mediaId " + str(rmi))
             counter += 1
-            rs = getRandomSleep(63,73)
+            rs = getRandomSleep(trf,trl)
             rn = randomNumber(rs['first'],rs['last'])
             print(str(getDateNow()) + " Sleeping now with seconds: " + str(rn)
             +  ", this is the counter until total likes: " + str(counter)
@@ -87,8 +99,12 @@ if __name__ == "__main__":
         else:
             print(str(getDateNow()) + " Response for like returned False")
             break_counter +=1
-            if break_counter >= 1:
+            # set to 5
+            if break_counter >= 3:
+                ap = get_absolute_path("state/" + cfg.user)
+                writeInFile(ap,"banned")
                 print(str(getDateNow()) + " Exiting script as like resp is False few times")
                 logout(api)
                 sys.exit()
+            sleep(rn)
     logout(api)
